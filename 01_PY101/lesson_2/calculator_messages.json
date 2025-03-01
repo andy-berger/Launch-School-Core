@@ -1,0 +1,28 @@
+{
+  "en": {
+    "welcome": "Welcome to Calculator!",
+    "first_num": "What's the first number?",
+    "second_num": "What's the second number?",
+    "invalid_num": "Hmm... that doesn't look like a valid number.",
+    "operation": "What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide",
+    "operation_validation": "You must choose 1, 2, 3, or 4",
+    "result": "The result is: {output}",
+    "another_calc": "Would you like to perform another calculation (y/n)?",
+    "another_calc_validation": "You must choose \"y\" or \"n\"",
+    "positive": "y",
+    "negative": "n"
+    },
+  "de": {
+    "welcome": "Willkommen zum Rechner!",
+    "first_num": "Welches ist die erste Zahl?",
+    "second_num": "Welches ist die zweite Zahl?",
+    "invalid_num": "Hmm... das sieht nicht nach einer korrekten Zahl aus.",
+    "operation": "Welche Berechnung möchtest du durchführen?\n1) Addition 2) Subtraktion 3) Multiplikation 4) Division",
+    "operation_validation": "Du musst zuwischen folgenden Optionen wählen: 1, 2, 3 oder 4",
+    "result": "Das Resultat ist: {output}",
+    "another_calc": "Möchtest du eine weitere Berechnung durchführen (j/n)?",
+    "another_calc_validation": "Du musst \"j́\" oder \"n\" wählen",
+    "positive": "j",
+    "negative": "n"
+    }
+}
