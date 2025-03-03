@@ -1,7 +1,7 @@
 {
   "en": {
     "welcome": "Welcome to Loan Calculator!",
-    "error": "Please enter a valid positive number.\n",
+    "error": "Please enter a valid positive number with no more than two decimal places.\n",
     "loan_amount": "Enter your loan amount in $: ",
     "annual_percentage_rate": "Enter the Annual Percentage Rate (APR) in %: ",
     "loan_duration_in_months": "Enter your loan duration in months: ",
@@ -12,7 +12,7 @@
   },
   "de": {
     "welcome": "Willkommen zum Kreditrechner!",
-    "error": "Bitte gib eine gültige positive Zahl ein.\n",
+    "error": "Bitte gib eine gültige positive Zahl mit maximal zwei Dezimalstellen ein.\n",
     "loan_amount": "Gib die Kredithöhe in $ ein: ",
     "annual_percentage_rate": "Gib die Jährliche Prozentuale Rate (JPR) in % ein: ",
     "loan_duration_in_months": "Gib die Kreditdauer in Monaten ein: ",

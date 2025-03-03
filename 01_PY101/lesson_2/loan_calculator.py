@@ -1,6 +1,8 @@
+import os
 import json
 
 LANG = "en"
+MONTHS_PER_YEAR = 12
 
 # Open the JSON file for reading
 with open('loan_calculator_messages.json', 'r') as file:
@@ -12,13 +14,22 @@ def get_message(message, confirmation=False, lang=LANG):
 
     return f"==> {messages[lang][message]}"
 
-def is_invalid_input(user_input):
+def strip_unwanted_chars(user_input):
+    if "$" in user_input or "%" in user_input:
+        user_input = user_input.replace("$", "").replace("%", "")
+
+    return user_input
+
+def is_invalid_input(user_input, question_number):
     try:
-        if isinstance(user_input, str) and \
-        ("$" in user_input or "%" in user_input):
-            user_input = user_input.replace("$", "").replace("%", "")
+        if "." in user_input:
+            if len(user_input.split(".")[1]) > 2:
+                raise ValueError(get_message("error"))
+
         user_input = float(user_input)
-        if user_input <= 0:
+
+        if (question_number == 1 and user_input < 0) or \
+           (question_number != 1 and user_input <= 0):
             raise ValueError(get_message("error"))
         return False
     except ValueError:
@@ -26,6 +37,7 @@ def is_invalid_input(user_input):
         return True
 
 def get_inputs():
+    os.system("clear")
     welcome_prompt = get_message("welcome")
     print(f"{welcome_prompt}\n{'-' * len(welcome_prompt)}")
     input_prompts = [get_message("loan_amount"),
@@ -35,8 +47,8 @@ def get_inputs():
     i = 0
     while i < len(inputs):
         while True:
-            answer = input(input_prompts[i])
-            if not is_invalid_input(answer):
+            answer = strip_unwanted_chars(input(input_prompts[i]))
+            if not is_invalid_input(answer, i):
                 inputs[i] = float(answer)
                 break
 
@@ -47,11 +59,17 @@ def get_inputs():
 def calculate_monthly_payment(loan_amount,
                               annual_percentage_rate,
                               loan_duration_in_months):
-    monthly_interest_rate = annual_percentage_rate / 12 / 100
-    return f"{get_message('result')} ${loan_amount *
-                                    (monthly_interest_rate /
-                                    (1 - (1 + monthly_interest_rate)
-                                    ** (-loan_duration_in_months))):.2f}"
+    monthly_interest_rate = 0 if annual_percentage_rate == 0 else \
+        annual_percentage_rate / MONTHS_PER_YEAR / 100
+
+    if annual_percentage_rate == 0:
+        monthly_payment = loan_amount / loan_duration_in_months
+    else:
+        monthly_payment = (loan_amount * monthly_interest_rate /
+                          (1 - (1 + monthly_interest_rate) **
+                          (-loan_duration_in_months)))
+
+    return f"{get_message('result')} ${monthly_payment:.2f}"
 
 def perform_another_calculation():
     another_calc = ""
