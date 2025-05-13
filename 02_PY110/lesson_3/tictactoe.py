@@ -51,6 +51,14 @@ def join_or(choices, main_delimiter=', ', end_delimiter='or'):
             choices_string = [str(num) for num in choices]
             return f"{main_delimiter.join(choices_string[:-1])} {end_delimiter} {choices_string[-1]}"
 
+def get_validated_input(prompt_message, valid_options):
+    while True:
+        prompt(prompt_message)
+        answer = input().lower().strip()
+        if answer in valid_options:
+            return answer
+        prompt(f"Please enter one of: {', '.join(valid_options)}")
+
 def alternate_player(current_player):
     return "computer" if current_player == "player" else "player"
 
@@ -113,21 +121,24 @@ def detect_winner(board):
 
     return None
 
+def check_match_winner(score, winner):
+    if score[winner] == GAMES_TO_WIN_MATCH:
+        prompt(f"Match finished. {winner} won the match! Final score: Player {score['Player']} | Computer {score['Computer']}")
+        return True
+    else:
+        prompt(f"{winner} won! Current score: Player {score['Player']} | Computer {score['Computer']}")
+        return False
+
 def play_tic_tac_toe(first_player):
     score = {'Player': 0, 'Computer': 0}
 
     if first_player == "choose":
-        first_player_key = None
-        while True:
-            prompt(f'Who should begin: (p)layer or (c)omputer (choose "p" or "c")')
-            first_player_key = input().lower()
-            if first_player_key in ["p", "c"]:
-                if first_player_key == "p":
-                    first_player = "player"
-                    break
-                elif first_player_key == "c":
-                    first_player = "computer"
-                    break
+        first_player_key = get_validated_input(
+            'Who should begin: (p)layer or (c)omputer (choose "p" or "c")',
+            ["p", "c"]
+        )
+
+        first_player = "player" if first_player_key == "p" else "computer"
 
     while True:
         board = initialize_board()
@@ -146,26 +157,18 @@ def play_tic_tac_toe(first_player):
         if someone_won(board):
             winner = detect_winner(board)
             score[winner] += 1
-            if score[winner] == GAMES_TO_WIN_MATCH:
-                prompt(f"Match finished. {winner} won the match! Final score: Player {score['Player']} | Computer {score['Computer']}")
+
+            if check_match_winner(score, winner):
                 score = {'Player': 0, 'Computer': 0}
-                prompt("Play another match? (y or n)")
+                answer = get_validated_input("Play another match? (y or n)", ["y", "n"])
             else:
-                prompt(f"{winner} won! Current score: Player {score['Player']} | Computer {score['Computer']}")
-                prompt("Play again? (y or n)")
+                answer = get_validated_input("Play again? (y or n)", ["y", "n"])
         else:
             prompt("It's a tie!")
-            prompt("Play again? (y or n)")
+            answer = get_validated_input("Play again? (y or n)", ["y", "n"])
 
-        while True:
-            answer = input().lower()
-            if answer not in ["y", "n"]:
-                prompt('Please enter "y" or "n".')
-                continue
-            elif answer == "y":
-                break
-            else:
-                prompt('Thanks for playing Tic Tac Toe!')
-                return
+        if answer == "n":
+            prompt('Thanks for playing Tic Tac Toe!')
+            return
 
 play_tic_tac_toe(BEGINNING_PLAYER)
