@@ -81,7 +81,7 @@ def determine_winner(player_hand, dealer_hand):
         return "Player", "Dealer busted", score
 
     if player_score == dealer_score:
-        return "no one", "tie", score
+        return "no one", "It's a tie", score
     elif player_score > dealer_score:
             return "Player", "Player won", score
     elif player_score < dealer_score:
@@ -93,7 +93,7 @@ def announce_winner(player_hand, dealer_hand):
     if "busted" in reason:
         print(f"{reason}, {winner.lower()} won! {score}")
     elif reason == "tie":
-        print(f"It's a {reason}! {score}")
+        print(f"{reason}! {score}")
     else:
         print(f"{reason}! {score}")
 
