@@ -110,11 +110,13 @@ def someone_won(board):
 def detect_winner(board):
     for line in WINNING_LINES:
         sq1, sq2, sq3 = line
+
         if (board[sq1] == HUMAN_MARKER
                and board[sq2] == HUMAN_MARKER
                and board[sq3] == HUMAN_MARKER):
             return 'Player'
-        elif (board[sq1] == COMPUTER_MARKER
+
+        if (board[sq1] == COMPUTER_MARKER
                and board[sq2] == COMPUTER_MARKER
                and board[sq3] == COMPUTER_MARKER):
             return 'Computer'
@@ -125,9 +127,9 @@ def check_match_winner(score, winner):
     if score[winner] == GAMES_TO_WIN_MATCH:
         prompt(f"Match finished. {winner} won the match! Final score: Player {score['Player']} | Computer {score['Computer']}")
         return True
-    else:
-        prompt(f"{winner} won! Current score: Player {score['Player']} | Computer {score['Computer']}")
-        return False
+
+    prompt(f"{winner} won! Current score: Player {score['Player']} | Computer {score['Computer']}")
+    return False
 
 def play_tic_tac_toe(first_player):
     score = {'Player': 0, 'Computer': 0}
