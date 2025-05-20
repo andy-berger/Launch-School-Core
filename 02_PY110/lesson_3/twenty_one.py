@@ -5,6 +5,8 @@ DECK_SUITS = ["H", "D", "C", "S"]
 DECK_NUMERIC_VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10"]
 DECK_VALUES = DECK_NUMERIC_VALUES + ["J", "Q", "K", "A"]
 DECK_TERMS = {"J": "Jack", "Q": "Queen", "K": "King", "A": "Ace"}
+TARGET_SCORE = 21
+DEALER_MIN_STAY = 17
 
 def shuffle_deck(deck):
     random.shuffle(deck)
@@ -60,14 +62,14 @@ def total(cards):
 
     # correct for Aces
     aces = values.count("A")
-    while sum_val > 21 and aces:
+    while sum_val > TARGET_SCORE and aces:
         sum_val -= 10
         aces -= 1
 
     return sum_val
 
 def busted(cards):
-    return total(cards) > 21
+    return total(cards) > TARGET_SCORE
 
 def determine_winner(player_hand, dealer_hand):
     player_score = total(player_hand)
@@ -127,7 +129,7 @@ def play_twenty_one():
         prompt(f"Dealer reveals: {translate_card(dealer_hand[0])} and {translate_card(dealer_hand[1])}")
         prompt(f"Dealer's total is: {total(dealer_hand)}")
 
-        while total(dealer_hand) < 17:
+        while total(dealer_hand) < DEALER_MIN_STAY:
             dealer_hand = hit(deck, dealer_hand)
             prompt(f"Dealer hits! Dealer's cards are now: {', '.join(translate_card(card) for card in dealer_hand)}")
             prompt(f"Dealer's total is now: {total(dealer_hand)}")
