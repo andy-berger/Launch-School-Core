@@ -27,8 +27,8 @@ def deal_initial_cards(deck):
 def translate_card(card):
     if card[1] in DECK_NUMERIC_VALUES:
         return card[1]
-    else:
-        return DECK_TERMS[card[1]]
+
+    return DECK_TERMS[card[1]]
 
 def prompt(message):
     print(f"=> {message}")
@@ -73,29 +73,32 @@ def determine_winner(player_hand, dealer_hand):
     player_score = total(player_hand)
     dealer_score = total(dealer_hand)
 
+    winner = None
+    reason = None
     score = f"Player score: {player_score} | Dealer score: {dealer_score}"
 
     if busted(player_hand):
-        return "Dealer", "Player busted", score
+        winner, reason = "Dealer", "Player busted"
     elif busted(dealer_hand):
-        return "Player", "Dealer busted", score
-
-    if player_score == dealer_score:
-        return "no one", "It's a tie", score
+        winner, reason = "Player", "Dealer busted"
+    elif player_score == dealer_score:
+        reason = "It's a tie"
     elif player_score > dealer_score:
-            return "Player", "Player won", score
+        winner, reason = "Player", "Player won"
     elif player_score < dealer_score:
-            return "Dealer", "Dealer won", score
+        winner, reason = "Dealer", "Dealer won"
+
+    return winner, reason, score
 
 def announce_winner(player_hand, dealer_hand):
     winner, reason, score = determine_winner(player_hand, dealer_hand)
 
     if "busted" in reason:
-        print(f"{reason}, {winner.lower()} won! {score}")
-    elif reason == "tie":
-        print(f"{reason}! {score}")
+        prompt(f"{reason}, {winner.lower()} won! {score}")
+    elif reason == "It's a tie":
+        prompt(f"{reason}! {score}")
     else:
-        print(f"{reason}! {score}")
+        prompt(f"{reason}! {score}")
 
 def hit(deck, cards):
     return cards + [deal_cards(deck)]
@@ -107,6 +110,7 @@ def play_twenty_one():
 
     prompt(f"Dealer has: {translate_card(dealer_hand[0])} and unknown card")
     prompt(f"You have:   {translate_card(player_hand[0])} and {translate_card(player_hand[1])}")
+
     while True:
         player_decision = player_turn()
         if player_decision in ["hit", "h"]:
@@ -133,7 +137,7 @@ def play_twenty_one():
 while True:
     os.system("clear")
     play_twenty_one()
-    another_round = get_validated_input("play again? (y/n)", ["y", "n"])
+    another_round = get_validated_input("Play again? (y/n)", ["y", "n"])
     if another_round == "n":
         prompt("Thank you for playing Twenty-One!")
         break
