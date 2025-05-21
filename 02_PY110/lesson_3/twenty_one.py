@@ -7,6 +7,7 @@ DECK_VALUES = DECK_NUMERIC_VALUES + ["J", "Q", "K", "A"]
 DECK_TERMS = {"J": "Jack", "Q": "Queen", "K": "King", "A": "Ace"}
 TARGET_SCORE = 21
 DEALER_MIN_STAY = 17
+TARGET_WINS = 3
 
 def shuffle_deck(deck):
     random.shuffle(deck)
@@ -113,12 +114,16 @@ def play_twenty_one():
     prompt(f"Dealer has: {translate_card(dealer_hand[0])} and unknown card")
     prompt(f"You have:   {translate_card(player_hand[0])} and {translate_card(player_hand[1])}")
 
+    player_total = total(player_hand)
+    prompt(f"Your total is: {player_total}")
+
     while True:
         player_decision = player_turn()
         if player_decision in ["hit", "h"]:
             player_hand = hit(deck, player_hand)
+            player_total = total(player_hand)
             prompt(f"You chose to hit! Your cards are now: {', '.join(translate_card(card) for card in player_hand)}")
-            prompt(f"Your total is now: {total(player_hand)}")
+            prompt(f"Your total is now: {player_total}")
             if busted(player_hand):
                 break
         elif player_decision in ["stay", "s"]:
@@ -135,11 +140,46 @@ def play_twenty_one():
             prompt(f"Dealer's total is now: {total(dealer_hand)}")
 
     announce_winner(player_hand, dealer_hand)
+    winner = determine_winner(player_hand, dealer_hand)[0]
+    return winner
 
-while True:
+def is_match_over(player_wins, dealer_wins):
+    return player_wins >= TARGET_WINS or dealer_wins >= TARGET_WINS
+
+def play_match():
+    round = 1
+    wins_player = 0
+    wins_dealer = 0
+    match_over = is_match_over(wins_player, wins_dealer)
+
     os.system("clear")
-    play_twenty_one()
-    another_round = get_validated_input("Play again? (y/n)", ["y", "n"])
-    if another_round == "n":
-        prompt("Thank you for playing Twenty-One!")
-        break
+    prompt("=== Welcome to Twenty-One ===")
+    prompt(f"The player who wins {TARGET_WINS} times first wins the match.")
+    prompt("Press any key to continue.")
+    input()
+
+    while not match_over:
+        os.system("clear")
+        prompt(f"=== Round {round} of Twenty-One ===")
+        round += 1
+        winner = play_twenty_one()
+        if winner == "Player":
+            wins_player += 1
+        elif winner == "Dealer":
+            wins_dealer += 1
+
+        match_over = is_match_over(wins_player, wins_dealer)
+
+        if not match_over:
+            prompt(f"Round wins so far: Player: {wins_player} | Dealer: {wins_dealer}")
+            another_round = get_validated_input("Play another round? (y/n)", ["y", "n"])
+            if another_round == "n":
+                prompt("Thank you for playing Twenty-One!")
+                break
+
+    match_winner = "Player" if wins_player > wins_dealer else "Dealer"
+    times_word_player = "times" if wins_player == 0 or wins_player > 1 else "time"
+    times_word_dealer = "times" if wins_dealer == 0 or wins_dealer > 1 else "time"
+    prompt(f"{match_winner} is the match winner! Player won {wins_player} {times_word_player} | Dealer won {wins_dealer} {times_word_dealer}")
+
+play_match()
