@@ -72,9 +72,9 @@ substrings = []
 
 # Loop for the starting character
 for start_idx in range(len(string)):
-  # Loop for the ending character
-  for end_idx in range(start_idx, len(string)):
-    substrings.append(string[start_idx:end_idx + 1])
+    # Loop for the ending character
+    for end_idx in range(start_idx, len(string)):
+        substrings.append(string[start_idx:end_idx + 1])
 
 print(substrings)
 # Output: ['h', 'ha', 'hal', 'halo', 'a', 'al', 'alo', 'l', 'lo', 'o']
@@ -143,9 +143,9 @@ def is_pangram(string):
 
 print(is_pangram("The quick, brown fox jumps over the lazy dog!") == True)
 print(is_pangram("The slow, brown fox jumps over the lazy dog!") == False)
-print(is_pangram("A wizard’s job is to vex chumps quickly in fog.") == True)
-print(is_pangram("A wizard’s task is to vex chumps quickly in fog.") == False)
-print(is_pangram("A wizard’s job is to vex chumps quickly in golf.") == True)
+print(is_pangram("A wizard's job is to vex chumps quickly in fog.") == True)
+print(is_pangram("A wizard's task is to vex chumps quickly in fog.") == False)
+print(is_pangram("A wizard's job is to vex chumps quickly in golf.") == True)
 
 my_str = "Sixty zippers were quickly picked from the woven jute bag."
 print(is_pangram(my_str) == True)
@@ -228,12 +228,12 @@ def closest_numbers(numbers):
     closest_pair = ()
     lowest_difference = float("inf")
 
-    for idx in range(len(numbers)):
-        for other_idx in range(idx + 1, len(numbers)):
-            curr_difference = abs(numbers[idx] - numbers[other_idx])
+    for first_idx in range(len(numbers)):
+        for second_idx in range(first_idx + 1, len(numbers)):
+            curr_difference = abs(numbers[first_idx] - numbers[second_idx])
             if curr_difference < lowest_difference:
                 lowest_difference = curr_difference
-                closest_pair = (numbers[idx], numbers[other_idx])
+                closest_pair = (numbers[first_idx], numbers[second_idx])
     
     return closest_pair
 
