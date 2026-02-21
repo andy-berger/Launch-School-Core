@@ -212,7 +212,7 @@ numbers = [1, 2, 3]
 unique_pairs = []
 
 for first_idx in range(len(numbers)):
-    for second_idx in range(idx + 1, len(numbers)):
+    for second_idx in range(first_idx + 1, len(numbers)):
         unique_pairs.append((numbers[first_idx], numbers[second_idx]))
 
 print(unique_pairs)
