@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "todolist_inocid"
+version = "0.1.0"
+authors = [
+    {name = "Andy Berger", email = "inocid@gmail.com"},
+]
+description = "A fantastic todo list application."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    # More classifiers can be found at
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/andy-berger/todolist"
+Issues = "https://github.com/andy-berger/todolist/issues"

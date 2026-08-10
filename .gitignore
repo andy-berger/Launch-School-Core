@@ -172,3 +172,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Personal study material
+flashcards/
+flashcards_spot_wiki/
