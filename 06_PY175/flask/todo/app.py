@@ -109,7 +109,7 @@ def show_list(lst, list_id):
 # Create a new todo and add it to the specified list
 @app.route("/lists/<list_id>/todos", methods=["POST"])
 @require_list
-def create_todo(list_id):
+def create_todo(lst, list_id):
     todo_title = request.form["todo"].strip()
     error = error_for_todo(todo_title)
     if error:
