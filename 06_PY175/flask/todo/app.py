@@ -129,14 +129,8 @@ def create_todo(list_id):
 # Toggle completion status of a todo
 @app.route("/lists/<list_id>/todos/<todo_id>/toggle", methods=["POST"])
 @require_todo
-def update_todo_status(list_id, todo_id):
-    lst = find_list_by_id(list_id, session["lists"])
-    todo = find_todo_by_id(todo_id, lst["todos"])
-    if not todo:
-        raise NotFound(description="Todo not found")
-
+def update_todo_status(lst, todo, list_id, todo_id):
     todo["completed"] = (request.form["completed"] == "True")
-
     flash("The todo has been updated.", "success")
     session.modified = True
     return redirect(url_for("show_list", list_id=list_id))
@@ -144,8 +138,8 @@ def update_todo_status(list_id, todo_id):
 # Delete a todo
 @app.route("/lists/<list_id>/todos/<todo_id>/delete", methods=["POST"])
 @require_todo
-def delete_todo(list_id, todo_id):
-    delete_todo_by_id(todo_id, lst)
+def delete_todo(lst, todo, list_id, todo_id):
+    delete_todo_by_id(lst, todo_id)
     flash("The todo has been deleted.", "success")
     session.modified = True
     return redirect(url_for("show_list", list_id=list_id))
@@ -169,8 +163,8 @@ def edit_list(lst, list_id):
 @app.route("/lists/<list_id>/delete", methods=["POST"])
 @require_list
 def delete_list(lst, list_id):
-    session["lists"] = [lst for lst in session["lists"]
-                        if lst["id"] != list_id]
+    session["lists"] = [l for l in session["lists"]
+                        if l["id"] != list_id]
 
     flash("The list has been deleted.", "success")
     session.modified = True
@@ -187,7 +181,7 @@ def update_list(lst, list_id):
         return render_template("edit_list.html", lst=lst, title=title)
 
     lst["title"] = title
-    flash("The list h as been updated.", "success")
+    flash("The list has been updated.", "success")
     session.modified = True
     return redirect(url_for("show_list", list_id=list_id))
 
