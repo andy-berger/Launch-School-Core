@@ -83,5 +83,27 @@ class CMSTest(unittest.TestCase):
             self.assertIn("new content",
                           content_response.get_data(as_text=True))
 
+    def test_view_new_document_form(self):
+        with self.client.get("/new") as response:
+            self.assertEqual(response.status_code, 200)
+            self.assertIn("<input", response.get_data(as_text=True))
+            self.assertIn('<button type="submit"', response.get_data(as_text=True))
+
+    def test_create_new_document(self):
+        with self.client.post("/create",
+                              data={"filename": "test.txt"},
+                              follow_redirects=True) as response:
+            self.assertEqual(response.status_code, 200)
+            self.assertIn("test.txt has been created",
+                          response.get_data(as_text=True))
+
+        with self.client.get("/") as index_response:
+            self.assertIn("test.txt", index_response.get_data(as_text=True))
+
+    def test_create_new_document_without_filename(self):
+        with self.client.post("/create", data={"filename": ""}) as response:
+            self.assertEqual(response.status_code, 422)
+            self.assertIn("A name is required", response.get_data(as_text=True))
+
 if __name__ == "__main__":
     unittest.main()
