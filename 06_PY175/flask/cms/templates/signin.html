@@ -7,9 +7,11 @@
         <input name="username" id="username" value="{{ request.form.username | default('') }}"/>
       </label>
     </div>
+    <div>
       <label for="password"> Password:
         <input type="password" id="password" name="password" />
       </label>
+    </div>
     <button type="submit">Sign In</button>
   </form>
 {% endblock %}

@@ -6,6 +6,16 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/app.css') }}">
 </head>
 <body>
+  {% if session.username %}
+    <form method="post" action="{{ url_for('signout') }}">
+      <p class="user-status">
+        Signed in as {{ session.username }}.
+        <button type="submit">Sign Out</button>
+      </p>
+    </form>
+  {% else %}
+    <p class="user-status"><a href="{{ url_for('show_signin_form') }}">Sign In</a></p>
+  {% endif %}
   {% for message in get_flashed_messages() %}
     <p class="message">{{ message }}</p>
   {% endfor %}
