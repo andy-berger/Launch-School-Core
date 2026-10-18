@@ -60,7 +60,7 @@ def get_data_path():
 @app.route("/")
 def index():
     data_dir = get_data_path()
-    files = [os.path.basename(path) for path in os.listdir(data_dir)]
+    files = os.listdir(data_dir)
     return render_template("index.html", files=files)
 
 @app.route("/<filename>")
